@@ -249,6 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af385c92c4d44014dabc0e83adac6b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentBrush: {fileID: 11400000, guid: 5039a83d88ec5ef4dad992eef6717f22, type: 2}
   linePrefab: {fileID: 7980343196539273416, guid: cc7cee6ea23cb894d909dcc2456dc3f3, type: 3}
   lines: []
   tolerance: 0

@@ -5,9 +5,7 @@ using UnityEngine;
 public class DrawManager : MonoBehaviour
 {
     Camera cam;
-    [SerializeField] Line linePrefab;
-    [SerializeField] List<Line> lines;
-    [SerializeField] float tolerance;
+    [SerializeField] Brush currentBrush;
 
     public const float RESOLUTION = 0.1f;
 
@@ -23,21 +21,39 @@ public class DrawManager : MonoBehaviour
     {
         Vector2 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 
-        if(Input.GetMouseButtonDown(0))
+        // If the currentBrush is a continuous stroke type....
+        if (currentBrush.brushType == Brush.BrushType.Continuous)
         {
-            currentLine = Instantiate(linePrefab, mousePos, Quaternion.identity);
+            // If you click down...
+            if (Input.GetMouseButtonDown(0))
+            {
+                // Spawn the line.
+                currentLine = Instantiate(currentBrush.brushObject, mousePos, Quaternion.identity).GetComponent<Line>();
+            }
+            // If you're holding it down...
+            if (Input.GetMouseButton(0))
+            {
+                // Add the next position to the line renderer.
+                currentLine.SetPosition(mousePos);
+            }
+            // If you release the click...
+            if (Input.GetMouseButtonUp(0))
+            {
+                // Simplify the line based on the brush stroke's tolerance.
+                currentLine.lineRenderer.Simplify(currentBrush.tolerance);
+            }
         }
-        if(Input.GetMouseButton(0))
+        // If the current brush is not continuous stroke type...
+        else
         {
-            currentLine.SetPosition(mousePos);
+            // If you click down...
+            if (Input.GetMouseButtonDown(0))
+            {
+                // Spawn the brush.
+                Instantiate(currentBrush.brushObject, mousePos, Quaternion.identity);
+            }
         }
-        if(Input.GetMouseButtonUp(0))
-        {
-            currentLine.lineRenderer.Simplify(tolerance);
-            lines.Add(currentLine);
-        }
+
     }
 
-  
-    
 }
