@@ -8,11 +8,15 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image))]
 public class ColorPicker : MonoBehaviour
 {
-    public TextMeshProUGUI debugText;
     public Image colorPreviewImage;
     RectTransform rect;
     Texture2D colorTexture;
     public Color color;
+    [Range(0, 1)]
+    public float opacity;
+
+    [SerializeField] Slider opacitySlider;
+    [SerializeField] TextMeshProUGUI opacityValueText;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +51,15 @@ public class ColorPicker : MonoBehaviour
             color = colorTexture.GetPixel(texX, texY);
 
             colorPreviewImage.color = color;
+            colorPreviewImage.color = new Color(colorPreviewImage.color.r, colorPreviewImage.color.g, colorPreviewImage.color.b, opacity);
         }
+    }
+
+    public void SetOpacity()
+    {
+        opacity = Mathf.Clamp(opacitySlider.value, 0, 255);
+        opacityValueText.text = opacity.ToString();
+        opacity /= 255f;
+        colorPreviewImage.color = new Color(colorPreviewImage.color.r, colorPreviewImage.color.g, colorPreviewImage.color.b, opacity);
     }
 }

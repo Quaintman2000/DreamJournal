@@ -70,6 +70,7 @@ public class DrawManager : MonoBehaviour
 
     public void SetColor(ColorPicker color)
     {
-        brushColor = color.color;
+        brushColor = new Color(color.color.r, color.color.g, color.color.b, color.opacity);
+        
     }
 }
