@@ -7,7 +7,7 @@ public class Line : MonoBehaviour
     public LineRenderer lineRenderer;
 
 
-    public void SetPosition(Vector2 pos)
+    public void SetPosition(Vector3 pos)
     {
         if (!CanAppend(pos)) return;
 
