@@ -5,19 +5,9 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     public LineRenderer lineRenderer;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    public void SetPosition(Vector2 pos)
+    public void SetPosition(Vector3 pos)
     {
         if (!CanAppend(pos)) return;
 
