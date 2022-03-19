@@ -93,8 +93,9 @@ namespace FreeDraw
         }
 
 
-        public void BoxBrush(Vector2 world_position)
+        public void EraserBrush(Vector2 world_position)
         {
+            Pen_Colour = Color.clear;
             // 1. Change world position to pixel coordinates
             Vector2 pixel_pos = WorldToPixelCoordinates(world_position);
 
@@ -117,11 +118,11 @@ namespace FreeDraw
                 MarkPixelsToColour(pixel_pos, Pen_Width, Pen_Colour);
             }
             //else
-            //{
-            //    // THE USER IS DRAGGING
-            //    // Should we do stuff between the previous mouse position and the current one?
-            //    ColourBetween(previous_drag_position, pixel_pos, Pen_Width, Pen_Colour);
-            //}
+           {
+               // THE USER IS DRAGGING
+               // Should we do stuff between the previous mouse position and the current one?
+               ColourBetween(previous_drag_position, pixel_pos, Pen_Width, Pen_Colour);
+           }
             ////////////////////////////////////////////////////////////////
 
             // 3. Actually apply the changes we marked earlier
@@ -164,6 +165,11 @@ namespace FreeDraw
         {
             // PenBrush is the NAME of the method we want to set as our current brush
             current_brush = PenBrush;
+        }
+
+        public void SetEraserBrush()
+        {
+            current_brush = EraserBrush;
         }
         //////////////////////////////////////////////////////////////////////////////
 

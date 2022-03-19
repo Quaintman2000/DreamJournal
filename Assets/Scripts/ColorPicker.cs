@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image))]
 public class ColorPicker : MonoBehaviour
 {
+    [SerializeField] FreeDraw.Drawable drawable;
     public Image colorPreviewImage;
     RectTransform rect;
     Texture2D colorTexture;
@@ -55,6 +56,11 @@ public class ColorPicker : MonoBehaviour
         }
     }
 
+    public void SetColor()
+    {
+        FreeDraw.Drawable.Pen_Colour = color;
+
+    }
     public void SetOpacity()
     {
         opacity = Mathf.Clamp(opacitySlider.value, 0, 255);
