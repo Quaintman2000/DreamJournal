@@ -13,6 +13,8 @@ namespace FreeDraw
     // 4. Hold down left mouse to draw on this texture!
     public class Drawable : MonoBehaviour
     {
+        public BoxCollider2D boxCollider { get; private set; }
+        public SpriteRenderer renderer;
         // PEN COLOUR
         public static Color Pen_Colour = Color.red;     // Change these to change the default drawing settings
         // PEN WIDTH (actually, it's a radius, in pixels)
@@ -362,13 +364,19 @@ namespace FreeDraw
 
         void Awake()
         {
-           
+            boxCollider = gameObject.GetComponent<BoxCollider2D>();
+            renderer = gameObject.GetComponent<SpriteRenderer>();
 
             drawable = this;
+            
+        }
+
+        private void Start()
+        {
             // DEFAULT BRUSH SET HERE
             current_brush = PenBrush;
 
-            drawable_sprite = this.GetComponent<SpriteRenderer>().sprite;
+            drawable_sprite = renderer.sprite;
             drawable_texture = drawable_sprite.texture;
 
             // Initialize clean pixels to use
