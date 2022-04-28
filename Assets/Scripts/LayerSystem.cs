@@ -21,6 +21,8 @@ public class LayerSystem : MonoBehaviour
 
     [SerializeField]
     ScrollRect panelContent;
+    [SerializeField]
+    Material defualtSpriteMaterial;
 
     int currentLayerIndex = 0;
 
@@ -114,4 +116,15 @@ public class LayerSystem : MonoBehaviour
         canvases[currentLayerIndex].renderer.color = new Color(255, 255, 255, value);
     }
 
+    public void AnimateLayer(Material animationMaterial)
+    {
+        if(animationMaterial != null)
+        {
+            canvases[currentLayerIndex].renderer.material = animationMaterial;
+        }
+        else
+        {
+            canvases[currentLayerIndex].renderer.material = defualtSpriteMaterial;
+        }
+    }
 }
