@@ -26,6 +26,8 @@ public class LayerSystem : MonoBehaviour
 
     int currentLayerIndex = 0;
 
+    ArtCanvas canvas;
+
     private void Awake()
     {
         if (Instance != null)
@@ -35,7 +37,28 @@ public class LayerSystem : MonoBehaviour
 
     private void Start()
     {
+        
+        if(ImageSaveAndLoad.LoadOldCanvas == true)
+        {
+           canvas = ImageSaveAndLoad.LoadArtCanvas(ImageSaveAndLoad.fileToLoad);
+        }
+        else
+        {
         CreateNewLayer();
+
+            List<Texture2D> texture2Ds = new List<Texture2D>();
+            foreach(FreeDraw.Drawable image in canvases)
+            {
+                texture2Ds.Add(image.renderer.sprite.texture);
+            }
+            List<Material> materials = new List<Material>();
+            foreach (FreeDraw.Drawable image in canvases)
+            {
+                materials.Add(image.renderer.material);
+            }
+
+            canvas = new ArtCanvas(texture2Ds, layerButtons, materials);
+        }
     }
 
     [ContextMenu("New Layer")]
@@ -126,5 +149,20 @@ public class LayerSystem : MonoBehaviour
         {
             canvases[currentLayerIndex].renderer.material = defualtSpriteMaterial;
         }
+    }
+}
+
+[System.Serializable]
+public class ArtCanvas
+{
+    public List<Texture2D> canvases;
+    public List<LayerButton> layerButtons;
+    public List<Material> materials;
+
+    public ArtCanvas (List<Texture2D> textures, List<LayerButton> layers, List<Material> mats)
+    {
+        canvases = textures;
+        layerButtons = layers;
+        materials = mats;
     }
 }
