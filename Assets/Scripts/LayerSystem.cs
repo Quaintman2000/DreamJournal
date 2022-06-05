@@ -9,7 +9,7 @@ public class LayerSystem : MonoBehaviour
 
     [SerializeField]
     Texture2D copyFromSprite;
-    [SerializeField] 
+    [SerializeField]
     FreeDraw.Drawable canvasPrefab;
     [SerializeField]
     List<FreeDraw.Drawable> canvases;
@@ -24,40 +24,48 @@ public class LayerSystem : MonoBehaviour
     [SerializeField]
     Material defualtSpriteMaterial;
 
+    [SerializeField]
+    Material[] loadMaterials;
+
     int currentLayerIndex = 0;
 
     ArtCanvas canvas;
+
 
     private void Awake()
     {
         if (Instance != null)
             Destroy(Instance.gameObject);
         Instance = this;
+
+        if (ImageSaveAndLoad.LoadOldCanvas == false)
+        {
+            List<Texture2D> texture2Ds = new List<Texture2D>();
+
+            List<Material> materials = new List<Material>();
+
+            int num = Random.Range(0, 9999);
+
+            canvas = new ArtCanvas(("Canvas" + num));
+        }
+
     }
 
     private void Start()
     {
-        
-        if(ImageSaveAndLoad.LoadOldCanvas == true)
+
+        if (ImageSaveAndLoad.LoadOldCanvas == true)
         {
-           canvas = ImageSaveAndLoad.LoadArtCanvas(ImageSaveAndLoad.fileToLoad);
+            canvas = ImageSaveAndLoad.LoadArtCanvas(ImageSaveAndLoad.fileToLoad);
+            LoadCanvasLayers(canvas);
+            LoadCanvasMaterials(canvas);
         }
         else
         {
-        CreateNewLayer();
+            
+            CreateNewLayer();
 
-            List<Texture2D> texture2Ds = new List<Texture2D>();
-            foreach(FreeDraw.Drawable image in canvases)
-            {
-                texture2Ds.Add(image.renderer.sprite.texture);
-            }
-            List<Material> materials = new List<Material>();
-            foreach (FreeDraw.Drawable image in canvases)
-            {
-                materials.Add(image.renderer.material);
-            }
 
-            canvas = new ArtCanvas(texture2Ds, layerButtons, materials);
         }
     }
 
@@ -66,16 +74,19 @@ public class LayerSystem : MonoBehaviour
     {
         Texture2D newTexture = new Texture2D(copyFromSprite.width, copyFromSprite.height);
         newTexture.SetPixels(copyFromSprite.GetPixels());
-       
+
         newTexture.Apply();
 
-        Sprite newSprite = Sprite.Create(newTexture, new Rect(0,0,newTexture.width, newTexture.height), new Vector2((0.5f),(0.5f)));
+        canvas.SetTexture(newTexture);
+
+        Sprite newSprite = Sprite.Create(newTexture, new Rect(0, 0, newTexture.width, newTexture.height), new Vector2((0.5f), (0.5f)));
 
         Vector3 layerPosition = Vector3.back * 0.1f * canvases.Count;
-        FreeDraw.Drawable newCanvas = Instantiate<FreeDraw.Drawable>(canvasPrefab, layerPosition, Quaternion.identity);
-        newCanvas.renderer.sprite = newSprite;
+        FreeDraw.Drawable newDrawable = Instantiate<FreeDraw.Drawable>(canvasPrefab, layerPosition, Quaternion.identity);
+        newDrawable.renderer.sprite = newSprite;
 
-        canvases.Add(newCanvas);
+        canvases.Add(newDrawable);
+        canvas.materialsNames.Add(newDrawable.renderer.material.name);
         currentLayerIndex = canvases.Count - 1;
         ChangeLayer(currentLayerIndex);
 
@@ -85,6 +96,54 @@ public class LayerSystem : MonoBehaviour
         newLayerButton.PreviewImage.sprite = newSprite;
 
         layerButtons.Add(newLayerButton);
+
+    }
+
+    void CreateNewLayer(Texture2D texture2D)
+    {
+        Sprite newSprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2((0.5f), (0.5f)));
+
+        Vector3 layerPosition = Vector3.back * 0.1f * canvases.Count;
+        FreeDraw.Drawable newDrawable = Instantiate<FreeDraw.Drawable>(canvasPrefab, layerPosition, Quaternion.identity);
+        newDrawable.renderer.sprite = newSprite;
+
+        canvases.Add(newDrawable);
+        currentLayerIndex = canvases.Count - 1;
+        ChangeLayer(currentLayerIndex);
+
+        // Spawn in the button.
+        LayerButton newLayerButton = Instantiate<LayerButton>(layerUIObjectPrefab, panelContent.content);
+        newLayerButton.LayerIndex = currentLayerIndex;
+        newLayerButton.PreviewImage.sprite = newSprite;
+
+        layerButtons.Add(newLayerButton);
+    }
+
+    private void LoadCanvasLayers(ArtCanvas artCanvas)
+    {
+        foreach(byte[] bytes in artCanvas.canvases)
+        {
+            Texture2D newTexture = new Texture2D(copyFromSprite.width, copyFromSprite.height);
+            newTexture.LoadImage(bytes);
+            newTexture.Apply();
+            CreateNewLayer(newTexture);
+        }
+
+    }
+
+    private void LoadCanvasMaterials(ArtCanvas artCanvas)
+    {
+        for(int i = 0; i < artCanvas.materialsNames.Count; i++ )
+        {
+            if (artCanvas.materialsNames[i].Contains( "Shader Graphs_Wave"))
+            {
+                canvases[i].renderer.material = loadMaterials[0];
+            }
+            else if(artCanvas.materialsNames[i].Contains("Sprites-Default"))
+            {
+                canvases[i].renderer.material = defualtSpriteMaterial;
+            }
+        }
     }
 
     public void ChangeLayer(int index)
@@ -126,6 +185,8 @@ public class LayerSystem : MonoBehaviour
     public void DeleteLayer()
     {
         Destroy(canvases[currentLayerIndex].gameObject);
+        canvas.canvases.RemoveAt(currentLayerIndex);
+        canvas.materialsNames.RemoveAt(currentLayerIndex);
         Destroy(layerButtons[currentLayerIndex].gameObject);
         canvases.RemoveAt(currentLayerIndex);
         layerButtons.RemoveAt(currentLayerIndex);
@@ -136,12 +197,12 @@ public class LayerSystem : MonoBehaviour
 
     public void AdjustLayerOpacity(float value, int layerIndex)
     {
-        canvases[currentLayerIndex].renderer.color = new Color(255, 255, 255, value);
+        canvases[layerIndex].renderer.color = new Color(255, 255, 255, value);
     }
 
     public void AnimateLayer(Material animationMaterial)
     {
-        if(animationMaterial != null)
+        if (animationMaterial != null)
         {
             canvases[currentLayerIndex].renderer.material = animationMaterial;
         }
@@ -150,19 +211,53 @@ public class LayerSystem : MonoBehaviour
             canvases[currentLayerIndex].renderer.material = defualtSpriteMaterial;
         }
     }
+    void AnimateLayer(Material animationMaterial, int index)
+    {
+        if (animationMaterial != null)
+        {
+            canvases[index].renderer.material = animationMaterial;
+        }
+        else
+        {
+            canvases[index].renderer.material = defualtSpriteMaterial;
+        }
+    }
+
+    public ArtCanvas GetCanvas()
+    {
+        for (int i = 0; i < canvases.Count; i++)
+        {
+            canvas.canvases[i] = canvases[i].renderer.sprite.texture.EncodeToPNG();
+            canvas.materialsNames[i] = canvases[i].renderer.material.name;
+        }
+        return canvas;
+    }
 }
 
 [System.Serializable]
 public class ArtCanvas
 {
-    public List<Texture2D> canvases;
-    public List<LayerButton> layerButtons;
-    public List<Material> materials;
+    public string name;
 
-    public ArtCanvas (List<Texture2D> textures, List<LayerButton> layers, List<Material> mats)
+    public List<byte[]> canvases = new List<byte[]>();
+    public List<string> materialsNames = new List<string>();
+    public ArtCanvas(string newName)
     {
-        canvases = textures;
-        layerButtons = layers;
-        materials = mats;
+        name = newName;
+        
+    }
+
+    public void SetTextures(List<Texture2D> texture2Ds)
+    {
+        foreach (Texture2D texture in texture2Ds)
+        {
+            canvases.Add(texture.EncodeToPNG());
+        }
+    }
+    public void SetTexture(Texture2D texture2D)
+    {
+
+        canvases.Add(texture2D.EncodeToPNG());
+
     }
 }

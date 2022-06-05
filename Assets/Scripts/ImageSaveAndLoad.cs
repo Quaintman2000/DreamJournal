@@ -12,16 +12,12 @@ public static class ImageSaveAndLoad
     public static void SaveCanvas(string fileName, ArtCanvas artCanvas)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/Canvases/" + fileName + ".dream";
+        string path = Application.persistentDataPath + "/" + fileName + ".dream";
+        Debug.Log(path);
         FileStream stream;
-        if (!Directory.Exists(path))
-        {
-            stream = new FileStream(path, FileMode.Create);
-        }
-        else
-        {
-            stream = new FileStream(path, FileMode.Append);
-        }
+
+        stream = new FileStream(path, FileMode.Create);
+
 
         formatter.Serialize(stream, artCanvas);
         stream.Close();
@@ -29,13 +25,63 @@ public static class ImageSaveAndLoad
 
     public static ArtCanvas LoadArtCanvas(string fileName)
     {
-        string path = Application.persistentDataPath + "/Canvases/" + fileName + ".dream";
-        if(File.Exists(path))
+        string path = Application.persistentDataPath + "/" + fileName;
+
+        if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
             ArtCanvas data = formatter.Deserialize(stream) as ArtCanvas;
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+            return null;
+        }
+    }
+
+    public static string[] GetFileNames()
+    {
+        string path = Application.persistentDataPath + "/";
+
+        string[] fileNames = Directory.GetFiles(path);
+
+        for (int i = 0; i < fileNames.Length; i++)
+        {
+            fileNames[i] = fileNames[i].Replace(path, string.Empty);
+        }
+
+        return fileNames;
+
+    }
+    public static void SaveNote(string fileName, string note)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/" + fileName + ".note";
+        Debug.Log(path);
+        FileStream stream;
+
+        stream = new FileStream(path, FileMode.Create);
+
+
+        formatter.Serialize(stream, note);
+        stream.Close();
+    }
+
+    public static string LoadNote(string fileName)
+    {
+        string path = Application.persistentDataPath + "/" + fileName;
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            string data = formatter.Deserialize(stream) as string;
             stream.Close();
 
             return data;

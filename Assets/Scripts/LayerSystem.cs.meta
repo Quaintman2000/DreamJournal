@@ -3,7 +3,12 @@ guid: 28e0b5c0212b0af45ad4489084b40cd2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - copyFromSprite: {fileID: 2800000, guid: 368b3ec8b0162ae45a46a562e43f4717, type: 3}
+  - canvasPrefab: {instanceID: 0}
+  - layerUIObjectPrefab: {instanceID: 0}
+  - panelContent: {instanceID: 0}
+  - defualtSpriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
