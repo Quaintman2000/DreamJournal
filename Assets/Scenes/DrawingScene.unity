@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 40.484924, y: 0}
+  m_AnchoredPosition: {x: 40.484863, y: 0}
   m_SizeDelta: {x: -80.9698, y: 91.1282}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &15767594
@@ -1496,7 +1496,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.314, y: -8.0606}
+  m_AnchoredPosition: {x: -15.313965, y: -8.060547}
   m_SizeDelta: {x: 170, y: 233}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &413348893
@@ -1790,7 +1790,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -22.097992, y: 0}
+  m_AnchoredPosition: {x: -22.098022, y: 0}
   m_SizeDelta: {x: 160, y: 65.493}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &494591506
@@ -2440,7 +2440,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -148, y: 16.806}
+  m_AnchoredPosition: {x: -148, y: 16.80603}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &663905175
@@ -2872,9 +2872,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FreeDraw.Drawable, Assembly-CSharp
-        m_MethodName: SetEraserBrush
+      - m_Target: {fileID: 1213806951}
+        m_TargetAssemblyTypeName: LayerSystem, Assembly-CSharp
+        m_MethodName: ToggleEraser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4476,7 +4476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -9, y: 14.415}
+  m_AnchoredPosition: {x: -9, y: 14.414978}
   m_SizeDelta: {x: 290, y: 140}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1104873216
@@ -4993,8 +4993,7 @@ MonoBehaviour:
   layerUIObjectPrefab: {fileID: 4020056656082794620, guid: bc9912888af0dac4ca87549ed95a6074, type: 3}
   panelContent: {fileID: 1056974215}
   defualtSpriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  loadMaterials:
-  - {fileID: 2100000, guid: 85b1f0658f8feda4baa2afaafb42eaba, type: 2}
+  loadMaterials: []
 --- !u!4 &1213806952
 Transform:
   m_ObjectHideFlags: 0
@@ -6436,7 +6435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -12.811}
+  m_AnchoredPosition: {x: 0, y: -12.810974}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1631412586
@@ -6805,7 +6804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -2, y: 14.415}
+  m_AnchoredPosition: {x: -2, y: 14.414978}
   m_SizeDelta: {x: 290, y: 140}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1702652832
