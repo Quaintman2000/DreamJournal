@@ -338,10 +338,10 @@ public class LayerSystem : MonoBehaviour
         return canvas;
     }
     // Toggles the eraser tool.
-    public void ToggleEraser()
+    public void ToggleEraser( bool value)
     {
         // Set the isErasing bool to the opposite of what it was previously.
-        isErasing = !isErasing;
+        isErasing = value;
         // If we are erasing...
         if (isErasing)
         {
