@@ -39,6 +39,9 @@ public class LayerSystem : MonoBehaviour
     // The current layer index. 
     int currentLayerIndex = 0;
 
+    bool isErasing;
+    Color previousColor;
+
     // The canvas data.
     ArtCanvas canvas;
 
@@ -334,6 +337,27 @@ public class LayerSystem : MonoBehaviour
         // Returns the canvas.
         return canvas;
     }
+    // Toggles the eraser tool.
+    public void ToggleEraser()
+    {
+        // Set the isErasing bool to the opposite of what it was previously.
+        isErasing = !isErasing;
+        // If we are erasing...
+        if (isErasing)
+        {
+            // Save the previous color and Toggle the eraser brush.
+            previousColor = FreeDraw.Drawable.Pen_Colour;
+            canvases[currentLayerIndex].SetEraserBrush();
+
+        }
+        // If not...
+        else
+        {
+            // Set the pen color back to what it was and set the pen brush.
+            FreeDraw.Drawable.Pen_Colour = previousColor;
+            canvases[currentLayerIndex].SetPenBrush();
+        }
+    }
 }
 
 [System.Serializable]
@@ -368,4 +392,7 @@ public class ArtCanvas
         canvases.Add(texture2D.EncodeToPNG());
 
     }
+
+   
+
 }
